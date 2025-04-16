@@ -65,6 +65,11 @@ const App = () => {
         toggleDltForm();
     };
 
+    const [search, setSearch] = useState("");
+    const handleSearch = (e) => {
+        setSearch(e.target.value);
+    };
+
     return (
         <>
             <div className='navbar flex flex-col justify-center items-center bg-gray-700 text-white p-4'>
@@ -73,6 +78,8 @@ const App = () => {
                     <input
                         type='text'
                         placeholder='Search...'
+                        value={search}
+                        onChange={handleSearch}
                         className='p-2 w-[40vw] bg-gray-200 text-black rounded-md'
                     />
                     <button
@@ -211,38 +218,44 @@ const App = () => {
             <div className='flex flex-col justify-center items-center'>
                 <div className='bg-gray-100 w-[70vw] flex flex-col'>
                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-4 gap-4'>
-                        {cards.map((card, index) => (
-                            <div
-                                key={index}
-                                className='bg-white flex flex-col justify-around p-6 mt-3 ml-3.5 rounded-lg shadow-md w-full max-w-sm'
-                            >
-                                <h2
-                                    className={`font-bold text-2xl mb-2 ${
-                                        card.value === "important"
-                                            ? "text-red-400"
-                                            : "text-black"
-                                    }`}
+                        {cards
+                            .filter((card) => card.title.includes(search))
+                            .map((card, index) => (
+                                <div
+                                    key={index}
+                                    className='bg-white flex flex-col justify-around p-6 mt-3 ml-3.5 rounded-lg shadow-md w-full max-w-sm'
                                 >
-                                    Title: {card.title}
-                                </h2>
-                                <p className='font-semibold'>Description:</p>
-                                <p className='italic m-2'>{card.description}</p>
-                                <div className='flex justify-between mt-4'>
-                                    <button
-                                        className='border-1 p-2 rounded-xl bg-gray-200 text-black hover:bg-yellow-200 transition duration-200 ease-in-out'
-                                        onClick={() => startEdit(index)}
+                                    <h2
+                                        className={`font-bold text-2xl mb-2 ${
+                                            card.value === "important"
+                                                ? "text-red-400"
+                                                : "text-black"
+                                        }`}
                                     >
-                                        Edit
-                                    </button>
-                                    <button
-                                        className='border-1 p-2 rounded-xl bg-gray-200 text-black hover:bg-yellow-200 transition duration-200 ease-in-out'
-                                        onClick={() => startDelete(index)}
-                                    >
-                                        Delete
-                                    </button>
+                                        Title: {card.title}
+                                    </h2>
+                                    <p className='font-semibold'>
+                                        Description:
+                                    </p>
+                                    <p className='italic m-2'>
+                                        {card.description}
+                                    </p>
+                                    <div className='flex justify-between mt-4'>
+                                        <button
+                                            className='border-1 p-2 rounded-xl bg-gray-200 text-black hover:bg-yellow-200 transition duration-200 ease-in-out'
+                                            onClick={() => startEdit(index)}
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            className='border-1 p-2 rounded-xl bg-gray-200 text-black hover:bg-yellow-200 transition duration-200 ease-in-out'
+                                            onClick={() => startDelete(index)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
                     </div>
                 </div>
             </div>
